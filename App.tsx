@@ -71,6 +71,7 @@ export default function App() {
   const [feedbackType, setFeedbackType] = useState<FeedbackType>('suggestion');
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [feedbackStatus, setFeedbackStatus] = useState('');
+  const [purchaseStatus, setPurchaseStatus] = useState('');
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -168,11 +169,11 @@ export default function App() {
   const beginReview = () => {
     const amount = Number.parseFloat(amountInput);
     if (!Number.isFinite(amount) || amount <= 0) {
-      setFeedbackStatus('Enter a valid purchase amount.');
+      setPurchaseStatus('Enter a valid purchase amount.');
       return;
     }
 
-    setFeedbackStatus('');
+    setPurchaseStatus('');
     setReviewing(true);
     setSecondsLeft(settings.pauseTimerEnabled ? 30 : 0);
   };
@@ -342,7 +343,7 @@ export default function App() {
               </View>
             )}
 
-            {feedbackStatus ? <Text style={styles.helperText}>{feedbackStatus}</Text> : null}
+            {purchaseStatus ? <Text style={styles.helperText}>{purchaseStatus}</Text> : null}
           </View>
         )}
 
