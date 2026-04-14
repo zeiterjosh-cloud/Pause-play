@@ -1,119 +1,126 @@
-# PausePay
+# PausePay Boilerplate (React Native + Firebase)
 
-An impulse-control budgeting app that helps users pause **before** spending, not just review spending after.
+PausePay is an impulse-control budgeting app starter built with React Native (Expo) and Firebase Realtime Database.
 
-## Core Concept
+## MVP Features Included
 
-When a user is about to make a discretionary purchase, they log it in the app and go through a short cooldown with reflection prompts before confirming.
+### 1) Home Screen
+- Daily spending limit
+- Remaining balance
+- Progress bar (spent vs daily limit)
+- Soft warning when close to limit
+- Quick button to open purchase logging
 
----
-
-## Free Plan — Core Control
-
-Everything needed to genuinely improve behavior:
-
-### Budgeting
-- Manual expense tracking
-- Daily/weekly spending limits
-- Remaining balance display
-
-### Impulse Control
-- “Pause before purchase” timer (default: 30–60 seconds)
+### 2) Log Purchase Screen
+- Amount input
+- Category selection (Food, Transport, Shopping, Bills, Other)
+- 30-second pause-before-confirm timer
 - Reflection prompts:
-  - “Do you need this?”
-  - “What’s your remaining budget?”
+  - “Do you need this right now?”
+  - “What’s your remaining budget after this?”
+- Confirm or cancel purchase
 
-### Awareness
-- Category breakdown
-- Daily/weekly summaries
-- Limit warnings
+### 3) Insights Screen
+- Weekly total spend
+- Category summary bar chart
+- Daily breakdown for last 7 days
 
-### Light Guardrails
-- Soft spending limits (warning only, no hard block)
+### 4) Settings Screen
+- Daily and weekly budget setup
+- Toggle soft limit warnings
+- Toggle pause timer
 
----
-
-## Paid Plan — Structure & Accountability ($5–10/month)
-
-Premium enhances control and accountability without paywalling core behavior-change value.
-
-### 1) Automation
-- Bank/credit card sync
-- Auto-categorization
-- Real-time alerts
-
-### 2) Advanced Controls
-- Custom cooldown timers (5 min → 24 hrs)
-- Rule engine:
-  - Time-based restrictions
-  - Transaction limits
-- Optional hard lock mode
-
-### 3) Accountability
-- Add trusted person (parent/friend/mentor)
-- Weekly reports
-- Overspending/rule-break alerts
-
-### 4) Advanced Insights
-- Spending trends
-- Impulse trigger detection
-- Monthly reports
-
-### 5) Proof Mode
-- Downloadable behavior reports:
-  - Budget adherence
-  - Spending improvement over time
-  - Rule consistency
+### 5) Feedback System
+- Rating (1–5)
+- Feedback type (suggestion, bug report, general)
+- Feedback message input
+- Submits feedback to Firebase Realtime Database
 
 ---
 
-## MVP Scope (v1)
-
-Build only:
-1. Home screen with daily remaining amount + progress indicator
-2. Log purchase flow (amount + category)
-3. Pause-before-confirm countdown with reflection prompts
-4. Daily limit tracking and warning state
-
-Not in MVP:
-- Bank sync
-- AI features
-- Advanced dashboards
-- Accountability sharing
+## Tech Stack
+- **React Native** with **Expo**
+- **TypeScript**
+- **Firebase Realtime Database**
 
 ---
 
-## Screen Blueprint
+## Firebase Data Shape
 
-### Home (Daily Control Hub)
-- “You have $X left today”
-- Spent vs limit progress
-- “Log Purchase” action
-- Near-limit warning
+All app data is stored under a user key (`users/demo-user` by default):
 
-### Log Purchase (Core Flow)
-1. Enter amount + category
-2. Start countdown
-3. Show reflection prompts + post-purchase remaining estimate
-4. Confirm or cancel
-
-### Insights
-- Basic category breakdown
-- Daily/weekly totals
-
-### Settings
-- Daily/weekly budget
-- Pause timer toggle
-
-### Accountability (Paid)
-- Invite trusted person
-- Weekly report + overspending alert toggles
+- `users/{userId}/settings`
+  - `dailyBudget`
+  - `weeklyBudget`
+  - `softLimitWarnings`
+  - `pauseTimerEnabled`
+- `users/{userId}/transactions`
+  - push list of transaction objects
+- `users/{userId}/feedback`
+  - push list of feedback submissions
 
 ---
 
-## Validation & Cost Guardrails
+## Local Setup
 
-- Target build budget for v1: **$0–$50**
-- Use free tooling and free tiers first
-- Validate with personal usage for 1–2 weeks before expanding scope
-- Monetize convenience, structure, and accountability (not basic access to budgeting)
+### 1. Install dependencies
+```bash
+npm install
+```
+
+### 2. Configure Firebase
+1. Create a Firebase project.
+2. Enable **Realtime Database**.
+3. Copy `.env.example` to `.env` and fill values:
+```bash
+cp .env.example .env
+```
+
+If env vars are missing, the app still runs in local-only mode (no remote writes).
+
+### 3. Run app
+```bash
+npm run start
+```
+
+Then open using:
+- iOS simulator (`npm run ios`)
+- Android emulator (`npm run android`)
+- Web (`npm run web`)
+
+### 4. Type check
+```bash
+npm run typecheck
+```
+
+---
+
+## Deployment (MVP)
+
+### Expo build preview
+```bash
+npx expo export --platform web
+```
+
+### Mobile release builds (EAS)
+1. Install EAS CLI:
+```bash
+npm install -g eas-cli
+```
+2. Login and configure:
+```bash
+eas login
+eas build:configure
+```
+3. Build:
+```bash
+eas build --platform android
+# or
+eas build --platform ios
+```
+
+---
+
+## Notes
+- Current boilerplate uses `demo-user` as the default user key.
+- Authentication and multi-user handling can be added in the next iteration.
